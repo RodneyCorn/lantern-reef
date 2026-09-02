@@ -17,6 +17,48 @@ LR.Props.bush = function (r, seed) {
   return g;
 };
 
+// Round broadleaf tree: a short tapered trunk and two or three leaf blobs.
+// Returns pieces for merging: { trunk: [...], leaves: [...] }.
+LR.Props.broadleafPieces = function (x, y, z, seed) {
+  const P = LR.PALETTE, rnd = LR.Seeded.rng(seed);
+  const h = 4.5 + rnd() * 3.5, lean = (rnd() - 0.5) * 0.8;
+  const curve = new THREE.CatmullRomCurve3([new THREE.Vector3(x, y - 0.3, z), new THREE.Vector3(x + lean * 0.3, y + h * 0.5, z), new THREE.Vector3(x + lean, y + h, z + lean * 0.5)]);
+  const trunk = [{ geometry: LR.Geo.taperedTube(curve, 0.42, 0.22, 4, 6) }];
+  const leaves = [];
+  const n = 2 + Math.floor(rnd() * 2), R = 2.4 + rnd() * 1.6;
+  const base = new THREE.Color(P.leafBroad), hi = new THREE.Color(P.frondLight), lo = new THREE.Color(P.grassDark);
+  for (let i = 0; i < n; i++) {
+    const a = rnd() * Math.PI * 2, d = i === 0 ? 0 : R * 0.55;
+    leaves.push({ geometry: LR.Props.bush(R * (i === 0 ? 1 : 0.8), seed * 3 + i),
+      position: new THREE.Vector3(x + lean + Math.cos(a) * d, y + h + R * 0.55 + (i ? -R * 0.25 : 0), z + lean * 0.5 + Math.sin(a) * d),
+      color: base.clone().lerp(rnd() < 0.5 ? hi : lo, rnd() * 0.5) });
+  }
+  return { trunk, leaves, h };
+};
+
+// Fern: a rosette of small upright fronds. Returns merge pieces.
+LR.Props.fernPieces = function (x, y, z, seed) {
+  const rnd = LR.Seeded.rng(seed), out = [], n = 6 + Math.floor(rnd() * 3), k = 0.7 + rnd() * 0.6;
+  for (let i = 0; i < n; i++) {
+    out.push({ geometry: LR.Props.frondGeometry(1.3 * k, 0.28 * k, 0.9, seed * 17 + i),
+      position: new THREE.Vector3(x, y - 0.05, z), rotation: new THREE.Euler(0, (i / n) * Math.PI * 2 + rnd() * 0.4, 0.95 + rnd() * 0.35, 'YXZ') });
+  }
+  return out;
+};
+
+// Vine: a leafy strip hanging down a cliff face. Returns a merge piece.
+LR.Props.vinePiece = function (x, y, z, nx, nz, len, seed) {
+  const rnd = LR.Seeded.rng(seed);
+  const g = new THREE.PlaneGeometry(1.2 + rnd() * 0.8, len, 1, 4);
+  g.translate(0, -len / 2, 0);
+  const P = g.attributes.position;
+  for (let i = 0; i < P.count; i++) P.setX(i, P.getX(i) + Math.sin(P.getY(i) * 1.7 + seed) * 0.3);   // wiggle
+  const yaw = Math.atan2(nx, nz);
+  // Held well clear of the wall: the mesh is coarser than the analytic surface.
+  return { geometry: g, position: new THREE.Vector3(x + nx * 1.1, y + 0.5, z + nz * 1.1), rotation: new THREE.Euler(0, yaw, 0),
+    color: new THREE.Color(LR.PALETTE.frondDark).lerp(new THREE.Color(LR.PALETTE.frondLight), rnd() * 0.6) };
+};
+
 // Big banyan-like tree: tapered trunk, roots, branches, a canopy of leaf
 // blobs, a plank platform with railing and a small hut, and a spiral of
 // plank steps up the trunk so you can climb to the tree house.

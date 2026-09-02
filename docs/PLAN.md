@@ -71,21 +71,23 @@ that are filtered smooth. Concretely:
 
 | Role | Color | Notes |
 |---|---|---|
-| Sky zenith | `#1E5BD6` | deep cobalt at the top |
+| Sky zenith | `#1A5CEC` | deep cobalt at the top |
 | Sky horizon | `#9BD8F5` | pale cyan where it meets the sea |
 | Cloud | `#FFFFFF` shaded to `#BFD8F0` | fluffy billboard clusters |
-| Shallow water | `#4FE3E0` | the "you can see the sand" color |
-| Deep water | `#1247B8` | cobalt, not navy |
+| Shallow water | `#3FEBE4` | the "you can see the sand" color |
+| Deep water | `#134FCC` | cobalt, not navy |
 | Foam / wave crest | `#F6FFFF` | |
-| Wet sand | `#E4CFA0` | |
-| Dry sand | `#FBF0D2` | almost white in sun |
-| Grass | `#5DC24E` → `#2E8A3A` | vivid, two-tone painted |
-| Palm frond | `#3FAE4A` / `#8CDD6A` | |
+| Wet sand | `#EAD4A6` | |
+| Dry sand | `#FFF4D8` | almost white in sun |
+| Grass | `#66D648` → `#2F9E3C` | vivid, two-tone painted |
+| Palm frond | `#3DB74C` / `#9BE868` | |
 | Palm trunk / driftwood | `#B08050` / `#7A5333` | |
 | Rock | `#8E8E96` → `#5A5A66` | cool gray, green mossy tops |
-| Thatch | `#D9B36A` | |
+| Thatch | `#E0B868` | |
 | Town walls | `#FFF3E0`, `#F9D5B5`, `#CFE9F3`, `#F6E7A1` | pastel stack |
 | Roof tiles | `#D9583A`, `#3D7AC4` | terracotta and blue |
+| Broadleaf canopy | `#4CC94A` | hill trees, bushes |
+| Flowers | `#FF4D5E`, `#FFD23F`, `#FF8AD0`, `#FFFFFF` | patches on the low grass |
 | Sunlight | `#FFF4D6` | warm white |
 | Shadow tint | `#6D8FC9` | bluish, never black |
 

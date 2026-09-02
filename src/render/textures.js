@@ -50,7 +50,7 @@ LR.Textures = (function () {
     ctx.lineWidth = 1.6; ctx.lineCap = 'round';
     for (let i = 0; i < 900; i++) {
       const x = rnd() * s, y = rnd() * s, h = 3 + rnd() * 6, lean = (rnd() - 0.5) * 3;
-      ctx.strokeStyle = gray(0.7 + rnd() * 0.5, 0.55);
+      ctx.strokeStyle = gray(0.62 + rnd() * 0.6, 0.6);
       wrapped(ctx, s, () => { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + lean, y - h); ctx.stroke(); });
     }
   });
@@ -133,6 +133,16 @@ LR.Textures = (function () {
     const t = tex(c); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
     return (cache.tuft = t);
   }
+  function flower() {
+    if (cache.flower) return cache.flower;
+    const s = 32, c = canvas(s), ctx = c.getContext('2d');
+    ctx.clearRect(0, 0, s, s);
+    ctx.fillStyle = '#ffffff';
+    for (let i = 0; i < 5; i++) { const a = (i / 5) * Math.PI * 2; ctx.beginPath(); ctx.ellipse(s / 2 + Math.cos(a) * 8, s / 2 + Math.sin(a) * 8, 7, 5, a, 0, Math.PI * 2); ctx.fill(); }
+    ctx.fillStyle = '#ffe680'; ctx.beginPath(); ctx.arc(s / 2, s / 2, 4, 0, Math.PI * 2); ctx.fill();
+    const t = tex(c); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+    return (cache.flower = t);
+  }
   function sunGlint() {
     if (cache.glint) return cache.glint;
     const s = 64, c = canvas(s), ctx = c.getContext('2d');
@@ -143,5 +153,5 @@ LR.Textures = (function () {
     return (cache.glint = t);
   }
 
-  return { sand, grass, rock, planks, thatch, bark, leaf, wall, cloudPuff, waterfall, tuft, sunGlint };
+  return { sand, grass, rock, planks, thatch, bark, leaf, wall, cloudPuff, waterfall, tuft, flower, sunGlint };
 })();

@@ -2,15 +2,16 @@
 // Everything that picks a color in the game picks it from here.
 window.LR = window.LR || {};
 LR.PALETTE = {
-  skyZenith: 0x1E5BD6, skyHorizon: 0x9BD8F5,
+  skyZenith: 0x1A5CEC, skyHorizon: 0x9BD8F5,
   cloud: 0xFFFFFF, cloudShade: 0xBFD8F0,
-  waterShallow: 0x4FE3E0, waterDeep: 0x1247B8, foam: 0xF6FFFF,
-  sandWet: 0xE4CFA0, sandDry: 0xFBF0D2,
-  grassLight: 0x5DC24E, grassDark: 0x2E8A3A,
-  frondDark: 0x3FAE4A, frondLight: 0x8CDD6A,
+  waterShallow: 0x3FEBE4, waterDeep: 0x134FCC, foam: 0xF6FFFF,
+  sandWet: 0xEAD4A6, sandDry: 0xFFF4D8,
+  grassLight: 0x66D648, grassDark: 0x2F9E3C,
+  frondDark: 0x3DB74C, frondLight: 0x9BE868,
   trunk: 0xB08050, driftwood: 0x7A5333,
   rockLight: 0x8E8E96, rockDark: 0x5A5A66,
-  thatch: 0xD9B36A,
+  thatch: 0xE0B868,
+  flowerRed: 0xFF4D5E, flowerYellow: 0xFFD23F, flowerPink: 0xFF8AD0, flowerWhite: 0xFFFFFF, leafBroad: 0x4CC94A,
   wall1: 0xFFF3E0, wall2: 0xF9D5B5, wall3: 0xCFE9F3, wall4: 0xF6E7A1,
   roofRed: 0xD9583A, roofBlue: 0x3D7AC4,
   sunlight: 0xFFF4D6, shadow: 0x6D8FC9,
