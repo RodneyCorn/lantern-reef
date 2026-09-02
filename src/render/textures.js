@@ -143,6 +143,14 @@ LR.Textures = (function () {
     const t = tex(c); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
     return (cache.flower = t);
   }
+  // Vertical stripes of `hex` and white, for awnings and umbrellas.
+  function stripes(hex, n = 8) {
+    const key = 'stripes' + hex + n;
+    if (cache[key]) return cache[key];
+    const s = 64, c = canvas(s), ctx = c.getContext('2d'), col = new THREE.Color(hex);
+    for (let i = 0; i < n; i++) { ctx.fillStyle = i % 2 ? '#ffffff' : rgba(col.r * 255, col.g * 255, col.b * 255, 1); ctx.fillRect((i / n) * s, 0, s / n + 1, s); }
+    return (cache[key] = tex(c));
+  }
   function sunGlint() {
     if (cache.glint) return cache.glint;
     const s = 64, c = canvas(s), ctx = c.getContext('2d');
@@ -153,5 +161,5 @@ LR.Textures = (function () {
     return (cache.glint = t);
   }
 
-  return { sand, grass, rock, planks, thatch, bark, leaf, wall, cloudPuff, waterfall, tuft, flower, sunGlint };
+  return { sand, grass, rock, planks, thatch, bark, leaf, wall, cloudPuff, waterfall, tuft, flower, stripes, sunGlint };
 })();

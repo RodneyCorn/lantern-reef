@@ -9,6 +9,7 @@ LR.Scatter = class Scatter {
     const n = new THREE.Vector3();
     const rnd = LR.Seeded.rng(D.seed + 77);
     const inZone = (x, z, id) => { const zn = terrain.zoneAt(x, z); return zn && zn.id === id; };
+    const nearBuilding = (x, z) => (LR.RESORT && Math.hypot(LR.RESORT.hotel.x - x, LR.RESORT.hotel.z - z) < 30) || (LR.LIGHTHOUSE && Math.hypot(LR.LIGHTHOUSE.tower.x - x, LR.LIGHTHOUSE.tower.z - z) < 14) || (LR.PIER && Math.hypot(LR.PIER.sunGate.x - x, LR.PIER.sunGate.z - z) < 12);
     const nearWindmill = (x, z) => (LR.RIDGE ? LR.RIDGE.windmills : []).some((w) => Math.hypot(w.x - x, w.z - z) < 4.2 * (w.scale || 1) + 8);
     const sample = (count, accept) => {
       const out = [];
@@ -38,7 +39,7 @@ LR.Scatter = class Scatter {
     this.group.add(inst);
 
     // Bushes.
-    const bushes = sample(260, (x, y, z, n) => y > 2.6 && n.y > 0.78 && !inZone(x, z, 'town'));
+    const bushes = sample(260, (x, y, z, n) => y > 2.6 && n.y > 0.78 && !inZone(x, z, 'town') && !nearBuilding(x, z));
     const bushPieces = bushes.map((b, i) => ({ geometry: LR.Props.bush(0.9 + rnd() * 1.6, 900 + i), position: new THREE.Vector3(b.x, b.y - 0.2, b.z),
       color: new THREE.Color(P.leafBroad).lerp(new THREE.Color(rnd() < 0.5 ? P.frondLight : P.grassDark), rnd() * 0.6) }));
     const bushMesh = new THREE.Mesh(LR.Geo.merge(bushPieces), LR.Materials.painted('leaf', 0xffffff, { vertexColors: true, repeat: [2, 2] }));
@@ -61,7 +62,7 @@ LR.Scatter = class Scatter {
     // Broadleaf trees on the grassy hills: trunks in one mesh, canopies in another.
     const treeSpots = [];
     const trees = sample(150, (x, y, z, n) => {
-      if (y < 3.2 || n.y < 0.74 || inZone(x, z, 'town') || inZone(x, z, 'cove') || nearWindmill(x, z)) return false;
+      if (y < 3.2 || n.y < 0.74 || inZone(x, z, 'town') || inZone(x, z, 'cove') || nearWindmill(x, z) || nearBuilding(x, z)) return false;
       for (const q of treeSpots) if (Math.hypot(q.x - x, q.z - z) < 9) return false;
       treeSpots.push({ x, z }); return true;
     });
@@ -114,7 +115,7 @@ LR.Scatter = class Scatter {
     const placed = [];
     // Palms stand where the sand meets the grass: on sand, with grass within ~9 m.
     const palms = sample(130, (x, y, z, n) => {
-      if (y < 1.2 || y > 3.2 || n.y < 0.8 || inZone(x, z, 'town')) return false;
+      if (y < 1.2 || y > 3.2 || n.y < 0.8 || inZone(x, z, 'town') || nearBuilding(x, z)) return false;
       let nearGrass = false;
       for (let a = 0; a < 6; a++) if (terrain.height(x + Math.cos(a) * 9, z + Math.sin(a) * 9) > 3.2) nearGrass = true;
       if (!nearGrass) return false;

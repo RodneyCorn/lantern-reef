@@ -5,6 +5,7 @@ LR.Sky = class Sky {
   constructor(scene) {
     this.scene = scene;
     this.hour = LR.DAY.startHour;
+    this.night = 0;
     this.timeScale = 1;
     this.sunDir = new THREE.Vector3(0, 1, 0);
     this._c = { zenith: new THREE.Color(), horizon: new THREE.Color(), sun: new THREE.Color(),
@@ -112,6 +113,7 @@ LR.Sky = class Sky {
     this.uniforms.sunColor.value.copy(this._c.sun);
     this.uniforms.sunVis.value = day ? 1 : 0.35;
     this.uniforms.night.value = n;
+    this.night = n;
 
     this.sun.color.copy(this._c.sun);
     this.sun.intensity = k.sunI;

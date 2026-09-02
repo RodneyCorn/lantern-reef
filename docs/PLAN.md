@@ -337,7 +337,7 @@ judge the *look* without running anything.
 | 0 | **Plan sign-off** (this doc) ✅ | Answer the decisions in §10 | Done |
 | 1 | **Gray-box island** ✅ | Run, jump, and swim across the shaped island, sky, sun, sea, day cycle, follow camera, stand-in Milo. | Movement feels good. Camera never clips. Smoke test green. |
 | 2 | **Style lock** ✅ | Sunrise Cove fully dressed: sand, grass, water shader with foam and sparkle, clouds, palms, docks, huts, big tree, waterfall, the leaning palm. | Side-by-side with your reference images, you say "yes, that's it." **This is the milestone to be picky at.** |
-| 3 | **The whole island** | All five zones built, Long Pier, hotel, town, windmills, lighthouse, balloon. Swim, climb, sit. | Can run everywhere in the map; nothing you can fall through. |
+| 3 | **The whole island** ✅ | All five zones built, Long Pier, hotel, town, windmills, lighthouse, balloon. Swim, climb, sit. | Can run everywhere in the map; nothing you can fall through. |
 | 4 | **Life** | Player mascot with full animation set, six NPCs with dialogue, gulls, crabs, fish. | The island feels inhabited. |
 | 5 | **Sound** | Four music tracks with zone cross-fade, ambience, all SFX. | Play with eyes closed and know where you are. |
 | 6 | **Game** | Sundrops, HUD, title screen, pause/settings, autosave, retro-res toggle, gamepad. Electron build, tests green, README rewritten. | Ship-able. |

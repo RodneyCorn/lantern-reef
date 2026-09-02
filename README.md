@@ -10,11 +10,13 @@ you run, jump, swim, climb, talk to islanders, and hunt for hidden Sundrops.
 Nothing is threatening. Original characters, original music, original sound
 effects — everything generated from code, no downloaded assets.
 
-**Status:** milestone 2 of 6, the style lock. Sunrise Cove is fully dressed
-(painted textures, palms, huts, docks and rowboats, the big tree with its
-tree house, the waterfall and cliff, clouds, foam shoreline) and the whole
-island has grass, bushes, rocks, and beach palms. Milo is still a stand-in,
-and there is no sound yet. See [docs/PLAN.md](docs/PLAN.md) for the style bible, island
+**Status:** milestone 3 of 6, the whole island. All five zones are built:
+Sunrise Cove, Resort Beach with the hotel and rock arch, the Long Pier out
+to the Sun Gate islet, Harbor Town with its plaza, bell tower, stone pier
+and ferry, Windmill Ridge with its windmills, and Lighthouse Point with a
+climbable lighthouse whose beam sweeps the island at night. A hot-air
+balloon drifts overhead. Milo is still a stand-in, and there is no sound
+yet. See [docs/PLAN.md](docs/PLAN.md) for the style bible, island
 layout, audio plan, and the milestone list; `shots/` has the latest
 screenshots.
 

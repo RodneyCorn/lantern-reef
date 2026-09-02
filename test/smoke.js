@@ -147,6 +147,14 @@ function check(cond, msg) {
     await wide('postcard-waterfall', [-140, 6, 100], [-172, 12, 52]);
     await page.evaluate(() => LR.game.teleport(-70, -140, 0));
     await wide('postcard-windmill', [-110, 72, -190], [-84, 80, -158]);
+    await page.evaluate(() => LR.game.teleport(175, -20, 0));
+    await wide('postcard-town', [300, 12, 40], [200, 8, -10]);
+    await page.evaluate(() => LR.game.teleport(50, 150, 0));
+    await wide('postcard-resort', [96, 6, 196], [40, 10, 118]);
+    await wide('postcard-pier', [146, 4, 178], [250, 8, 290]);
+    await page.evaluate(() => { LR.game.teleport(200, -145, 0); LR.game.setHour(19.4); });
+    await wide('postcard-lighthouse-dusk', [150, 62, -100], [205, 66, -152]);
+    await page.evaluate(() => LR.game.setHour(10));
     await page.evaluate(() => LR.game.setHour(18.1));
     await wide('wide-sunset-from-sea', [-80, 40, 520], [0, 20, 0]);
   }

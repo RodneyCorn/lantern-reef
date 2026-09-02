@@ -22,6 +22,11 @@
   const scatter = new LR.Scatter(scene, terrain, physics);
   const cove = new LR.Cove(scene, terrain, physics);
   const ridge = new LR.Ridge(scene, terrain, physics);
+  const town = new LR.Town(scene, terrain, physics);
+  const resort = new LR.Resort(scene, terrain, physics);
+  const pier = new LR.Pier(scene, terrain, physics);
+  const lighthouse = new LR.Lighthouse(scene, terrain, physics);
+  const balloon = new LR.Balloon(scene);
   const player = new LR.Player(scene, physics, LR.ISLAND.spawn);
   const follow = new LR.FollowCamera(camera, physics);
   const input = new LR.Input(canvas);
@@ -38,7 +43,7 @@
   let last = performance.now();
   let paused = false;
   const game = {
-    ready: false, scene, camera, renderer, terrain, physics, sky, water, clouds, cove, ridge, scatter, player, follow, input, hud, props,
+    ready: false, scene, camera, renderer, terrain, physics, sky, water, clouds, cove, ridge, town, resort, pier, lighthouse, balloon, scatter, player, follow, input, hud, props,
     frames: 0,
     setHour: (h) => sky.setHour(h),
     teleport: (x, z, heading) => { player.teleport(x, z, heading); follow._first = true; },
@@ -63,6 +68,9 @@
       clouds.update(dt, sky);
       cove.update(dt);
       ridge.update(dt);
+      town.update(dt);
+      lighthouse.update(dt, sky.night);
+      balloon.update(dt);
       hud.showZone(terrain.zoneAt(player.pos.x, player.pos.z), dt);
     }
     hud.setHour(sky.hour);
