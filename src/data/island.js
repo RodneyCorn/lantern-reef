@@ -39,6 +39,10 @@ LR.ISLAND = {
     { name: 'resort-beach', x: 50,   z: 150, r: 80, y: 1.5, s: 0.95 },
     { name: 'town-plaza',   x: 190,  z: -10, r: 45, y: 6.0, s: 0.85 },
     { name: 'waterfall-pool', x: -172, z: 58, r: 9, y: -0.9, s: 1.0 },
+    // Level ground under the windmills (y is taken from the terrain at the center).
+    { name: 'mill-big',   x: -84,  z: -158, r: 16, s: 1.0 },
+    { name: 'mill-west',  x: -140, z: -108, r: 10, s: 1.0 },
+    { name: 'mill-east',  x: -18,  z: -178, r: 10, s: 1.0 },
   ],
   // Gentle rolling detail on land.
   detail: { amp: 1.6, scale: 1 / 38, octaves: 3 },

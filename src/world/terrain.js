@@ -5,6 +5,8 @@ LR.Terrain = class Terrain {
   constructor(data) {
     this.data = data;
     this.height = this.height.bind(this);
+    // Flats with no fixed height take the natural ground height at their center.
+    for (const f of data.flats || []) if (f.y == null) f.y = this._height(f.x, f.z, false);
   }
 
   // Signed "coast coordinate": < 1 is land, > 1 is sea.
@@ -20,7 +22,9 @@ LR.Terrain = class Terrain {
     return e;
   }
 
-  height(x, z) {
+  height(x, z) { return this._height(x, z, true); }
+
+  _height(x, z, useFlats) {
     const c = this.data.coast;
     const e = this._coast(x, z);
     // Beach ramp: sea shelf (-2) up to beachHeight (3) across the coastline.
@@ -48,7 +52,7 @@ LR.Terrain = class Terrain {
     const dd = this.data.detail;
     h += LR.Seeded.fbm(x * dd.scale, z * dd.scale, this.data.seed + 9, dd.octaves) * dd.amp * land;
     // Flats.
-    for (const f of this.data.flats || []) {
+    for (const f of (useFlats ? this.data.flats : []) || []) {
       const d = Math.hypot(x - f.x, z - f.z) / f.r;
       if (d >= 1) continue;
       const k = LR.Seeded.smooth(1 - d) * f.s * land;

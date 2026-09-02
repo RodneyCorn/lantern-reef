@@ -9,6 +9,7 @@ LR.Scatter = class Scatter {
     const n = new THREE.Vector3();
     const rnd = LR.Seeded.rng(D.seed + 77);
     const inZone = (x, z, id) => { const zn = terrain.zoneAt(x, z); return zn && zn.id === id; };
+    const nearWindmill = (x, z) => (LR.RIDGE ? LR.RIDGE.windmills : []).some((w) => Math.hypot(w.x - x, w.z - z) < 4.2 * (w.scale || 1) + 8);
     const sample = (count, accept) => {
       const out = [];
       let tries = 0;
@@ -60,7 +61,7 @@ LR.Scatter = class Scatter {
     // Broadleaf trees on the grassy hills: trunks in one mesh, canopies in another.
     const treeSpots = [];
     const trees = sample(150, (x, y, z, n) => {
-      if (y < 3.2 || n.y < 0.74 || inZone(x, z, 'town') || inZone(x, z, 'cove')) return false;
+      if (y < 3.2 || n.y < 0.74 || inZone(x, z, 'town') || inZone(x, z, 'cove') || nearWindmill(x, z)) return false;
       for (const q of treeSpots) if (Math.hypot(q.x - x, q.z - z) < 9) return false;
       treeSpots.push({ x, z }); return true;
     });

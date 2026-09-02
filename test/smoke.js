@@ -145,6 +145,8 @@ function check(cond, msg) {
     await wide('wide-cove-from-above', [-150, 120, 260], [-140, 0, 60]);
     await wide('postcard-cove', [-122, 4, 158], [-140, 6, 70]);
     await wide('postcard-waterfall', [-140, 6, 100], [-172, 12, 52]);
+    await page.evaluate(() => LR.game.teleport(-70, -140, 0));
+    await wide('postcard-windmill', [-110, 72, -190], [-84, 80, -158]);
     await page.evaluate(() => LR.game.setHour(18.1));
     await wide('wide-sunset-from-sea', [-80, 40, 520], [0, 20, 0]);
   }
