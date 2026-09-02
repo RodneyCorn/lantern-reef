@@ -39,6 +39,20 @@ function check(cond, msg) {
     await page.screenshot({ path: path.join(ROOT, 'shots', name + '.png') });
     console.log('  shot', name);
   };
+  // A free-camera screenshot: pauses the world, places the camera, renders once.
+  const wide = async (name, cam, look) => {
+    if (!SHOTS) return;
+    await page.evaluate(([cam, look]) => {
+      const g = LR.game; g.pause(true);
+      g.camera.position.set(...cam); g.camera.lookAt(...look);
+      g.sky.follow(g.player.pos, g.camera.position);
+      g.renderer.render(g.scene, g.camera);
+    }, [cam, look]);
+    await page.waitForTimeout(150);
+    await page.screenshot({ path: path.join(ROOT, 'shots', name + '.png') });
+    console.log('  shot', name);
+    await page.evaluate(() => LR.game.pause(false));
+  };
   const state = () => page.evaluate(() => {
     const p = LR.game.player;
     return { x: p.pos.x, y: p.pos.y, z: p.pos.z, grounded: p.grounded, swimming: p.swimming, speed: p.speed,
@@ -180,18 +194,6 @@ function check(cond, msg) {
 
   // --- wide establishing shots (free camera) ---
   if (SHOTS) {
-    const wide = async (name, cam, look) => {
-      await page.evaluate(([cam, look]) => {
-        const g = LR.game; g.pause(true);
-        g.camera.position.set(...cam); g.camera.lookAt(...look);
-        g.sky.follow(g.player.pos, g.camera.position);
-        g.renderer.render(g.scene, g.camera);
-      }, [cam, look]);
-      await page.waitForTimeout(150);
-      await page.screenshot({ path: path.join(ROOT, 'shots', name + '.png') });
-      console.log('  shot', name);
-      await page.evaluate(() => LR.game.pause(false));
-    };
     await page.evaluate(() => { LR.game.setHour(10); LR.game.teleport(-120, 95, 0); });
     await wide('wide-from-southwest', [-520, 220, 520], [40, 0, -20]);
     await wide('wide-from-northeast', [520, 240, -420], [-40, 0, 40]);
