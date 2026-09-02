@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lantern Reef</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #9bd8f5;
+    font-family: "Trebuchet MS", "Segoe UI", Verdana, sans-serif; user-select: none; }
+  #game { display: block; width: 100vw; height: 100vh; outline: none; }
+  #hud { position: fixed; inset: 0; pointer-events: none; color: #fff;
+    text-shadow: 0 1px 0 rgba(0,0,0,.35), 0 0 8px rgba(0,60,120,.35); }
+  .chip { position: absolute; padding: 6px 12px; border-radius: 14px;
+    background: rgba(10, 40, 90, .38); font-size: 14px; letter-spacing: .02em; }
+  #title { left: 16px; top: 14px; font-weight: bold; font-size: 16px; }
+  #hint { left: 16px; bottom: 14px; opacity: .9; }
+  #clock { right: 16px; top: 14px; font-variant-numeric: tabular-nums; }
+  #fps { right: 16px; bottom: 14px; opacity: .7; font-size: 12px; }
+  #zone { position: absolute; left: 50%; top: 18%; transform: translateX(-50%);
+    text-align: center; opacity: 0; transition: opacity .6s ease; }
+  #zone .name { font-size: 40px; font-weight: bold; letter-spacing: .04em;
+    text-shadow: 0 2px 0 rgba(0,0,0,.35), 0 0 18px rgba(0,80,160,.5); }
+  #zone .sub { font-size: 16px; font-style: italic; opacity: .95; margin-top: 4px; }
+  #zone.show { opacity: 1; }
+</style>
+</head>
+<body>
+<canvas id="game" tabindex="0"></canvas>
+<div id="hud">
+  <div id="title" class="chip">Lantern Reef <span style="opacity:.7;font-weight:normal">· milestone 1 gray-box</span></div>
+  <div id="clock" class="chip">10:00</div>
+  <div id="hint" class="chip">WASD move · SPACE jump (twice for double) · click + mouse to look · wheel zoom · gamepad OK</div>
+  <div id="fps" class="chip">-- fps</div>
+  <div id="zone"><div class="name"></div><div class="sub"></div></div>
+</div>
+<script src="vendor/three.min.js"></script>
+<script src="src/data/palette.js"></script>
+<script src="src/data/island.js"></script>
+<script src="src/data/daycycle.js"></script>
+<script src="src/engine/seeded.js"></script>
+<script src="src/engine/input.js"></script>
+<script src="src/engine/physics.js"></script>
+<script src="src/engine/camera.js"></script>
+<script src="src/render/sky.js"></script>
+<script src="src/world/terrain.js"></script>
+<script src="src/world/water.js"></script>
+<script src="src/world/props.js"></script>
+<script src="src/characters/player.js"></script>
+<script src="src/ui/hud.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>

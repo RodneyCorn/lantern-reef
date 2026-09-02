@@ -10,17 +10,38 @@ you run, jump, swim, climb, talk to islanders, and hunt for hidden Sundrops.
 Nothing is threatening. Original characters, original music, original sound
 effects — everything generated from code, no downloaded assets.
 
-**Status:** planning. Read [docs/PLAN.md](docs/PLAN.md) for the style bible,
-island layout, character options, audio plan, tech choice, and milestones.
+**Status:** milestone 1 of 6, the gray-box island. The whole island exists
+as terrain you can run, jump, and swim across, with the sky, sun, sea, day
+cycle, follow camera, and a stand-in Milo. No props, textures, characters,
+or sound yet. See [docs/PLAN.md](docs/PLAN.md) for the style bible, island
+layout, audio plan, and the milestone list; `shots/` has the latest
+screenshots.
 
-## Planned stack
+## Play it
 
-- Three.js (vendored, no CDN) in vanilla JavaScript modules
-- Web Audio synthesizer for all music and sound
+Open `index.html` in any modern browser. No install, no server.
+
+For a desktop window: `npm install` then `npm start`.
+
+## Test it
+
+```bash
+npm install
+npm test          # boots the game headless, drives Milo around, checks the world
+npm run shots     # same, plus screenshots into shots/
+```
+
+Tests need a Chromium. They look for a Playwright-installed one first, or
+set `LR_CHROME=/path/to/chrome`.
+
+## Stack
+
+- Three.js (vendored r158, no CDN) in plain JavaScript
+- Web Audio synthesizer for all music and sound (milestone 5)
 - Electron wrapper for desktop builds and Steam
 - Headless Chromium smoke tests with screenshots per milestone
 
-## Planned controls
+## Controls
 
 | Key | Action |
 |---|---|

@@ -332,8 +332,8 @@ judge the *look* without running anything.
 
 | # | Milestone | What you'll be able to do | Definition of done |
 |---|---|---|---|
-| 0 | **Plan sign-off** (this doc) | Answer the decisions in §10 | You reply "go" |
-| 1 | **Gray-box island** | Run and jump on a flat gray island, sky, water plane, follow camera. | Movement feels good. Camera never clips. 60 fps. |
+| 0 | **Plan sign-off** (this doc) ✅ | Answer the decisions in §10 | Done |
+| 1 | **Gray-box island** ✅ | Run, jump, and swim across the shaped island, sky, sun, sea, day cycle, follow camera, stand-in Milo. | Movement feels good. Camera never clips. Smoke test green. |
 | 2 | **Style lock** | Sunrise Cove fully dressed: sand, grass, water shader with foam and sparkle, clouds, palms, docks, huts, big tree, waterfall, the leaning palm. | Side-by-side with your reference images, you say "yes, that's it." **This is the milestone to be picky at.** |
 | 3 | **The whole island** | All five zones built, Long Pier, hotel, town, windmills, lighthouse, balloon. Swim, climb, sit. | Can run everywhere in the map; nothing you can fall through. |
 | 4 | **Life** | Player mascot with full animation set, six NPCs with dialogue, gulls, crabs, fish. | The island feels inhabited. |

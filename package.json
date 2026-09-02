@@ -1,0 +1,29 @@
+{
+  "name": "lantern-reef",
+  "productName": "Lantern Reef",
+  "version": "0.1.0",
+  "description": "A bright, welcoming 3D island you can run around in, in the upscaled early-2000s style.",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/smoke.js",
+    "shots": "node test/smoke.js --shots",
+    "dist": "electron-builder --publish never"
+  },
+  "author": "RodneyCorn",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0",
+    "playwright-core": "^1.56.1"
+  },
+  "build": {
+    "appId": "com.rodneycorn.lanternreef",
+    "productName": "Lantern Reef",
+    "files": ["index.html", "src/**/*", "vendor/**/*", "electron/**/*"],
+    "directories": { "output": "dist" },
+    "win": { "target": "dir" },
+    "mac": { "target": "dir", "category": "public.app-category.games" },
+    "linux": { "target": "dir", "category": "Game" }
+  }
+}
