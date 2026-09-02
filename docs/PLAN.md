@@ -1,6 +1,6 @@
-# Sundrift Isle — 3D Island World Plan
+# Lantern Reef — Game Plan
 
-*Working title. A bright, welcoming island you can run around in, built to feel
+*A bright, welcoming island you can run around in, built to feel
 like a place you visited in 2002 and never quite forgot.*
 
 This document is the agreement on **what** we are building and **how** before
@@ -174,7 +174,7 @@ canvas-painted texture for the face, freckles, necklace, and drawstring.
 The result will read as the era's in-game version of this concept art:
 chunkier and lower-detail than the sheet, which is exactly the relationship
 GameCube-era models had to their concept art. Toon-ramp shading, no
-outlines. **His name is still open, see §10.**
+outlines. **His name is Milo.**
 
 Animation set for v1: idle (breathing + occasional look-around), walk, run,
 jump, double jump flip, land, swim, tread water, climb ladder, sit (on the
@@ -215,7 +215,7 @@ Deliberately small. The world *is* the game.
   | Phase | Length | What you see |
   |---|---|---|
   | Morning → afternoon | 12 min | The "on-model" look from §3, sun high and warm, hard blue sky |
-  | Sunset | 3 min | Sky to orange and pink, long shadows, gold sparkle on the water, clouds lit from below, "Sundrift Morning" softens into a slower arrangement |
+  | Sunset | 3 min | Sky to orange and pink, long shadows, gold sparkle on the water, clouds lit from below, "Lantern Morning" softens into a slower arrangement |
   | Night | 2.5 min | Deep indigo sky with stars, the lighthouse beam sweeping the island, windows glowing in town, fireflies on the ridge, faint blue glow at the waterline |
   | Sunrise | 2.5 min | Pink to gold to blue, mist over the cove, gulls waking up |
 
@@ -240,7 +240,7 @@ note strings, with the voices this style needs:
   (Karplus-Strong), soft brass pad, shaker/bongo percussion, a synthesized
   reverb (generated impulse response) so it stops sounding like a chiptune.
 - **Music (four tracks):**
-  1. *"Sundrift Morning"* — main island theme. Bright major key, ~104 BPM,
+  1. *"Lantern Morning"* — main island theme. Bright major key, ~104 BPM,
      steel drum melody over marimba and guitar, light bongos. Loops cleanly.
   2. *"Harbor Bells"* — town variant, same key, slower, bell tower motif.
   3. *"Lighthouse Wind"* — ridge/lighthouse, airy pad, mostly melody, wind.
@@ -350,15 +350,11 @@ first with the data/engine split above; day cycle with sunset and a short
 night; gamepad support included (cheap, and the camera is designed for it
 from the start).
 
-**Still open:**
+**Also settled:** the island and the game are **Lantern Reef**, and the kid is
+**Milo**. The name earns its keep at night, when the lighthouse beam sweeps
+the reef and the town windows glow; the reef itself is the ring of
+offshore rock stacks and the arch you can swim out to.
 
-1. **Game name.** "Sundrift Isle" is the placeholder. Candidates, with the
-   reasoning:
-   - **Halcyon Cay** — "halcyon days" literally means the calm, happy days
-     you look back on. That is the whole pitch. (recommended)
-   - **Everlong Bay** — the summer that never ends.
-   - **Marigold Shore** — warm, sunny, a little old-fashioned.
-   - **Lantern Reef** — hints at the lighthouse and the night phase.
-   - **Sunhollow** — one word, easy to say, feels like a place.
-2. **The kid's name.** Candidates: **Kip** (recommended: short, bright,
-   sounds like a skipping stone), **Marlo**, **Tobin**, **Sully**, **Reef**.
+Music track names follow the island: *"Lantern Morning"* (main theme),
+*"Harbor Bells"*, *"Lighthouse Wind"*, *"Far Out Blue"* (title), plus the
+sunset and night arrangements of the main theme.

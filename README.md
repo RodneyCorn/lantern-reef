@@ -1,4 +1,4 @@
-# Sundrift Isle
+# Lantern Reef
 
 *A bright, welcoming island you can run around in — built to feel like a
 place you visited in 2002 and never quite forgot.*
