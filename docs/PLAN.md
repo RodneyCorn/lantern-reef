@@ -4,9 +4,8 @@
 like a place you visited in 2002 and never quite forgot.*
 
 This document is the agreement on **what** we are building and **how** before
-any code is written. Sections marked **DECISION NEEDED** are the questions I
-need answered to start; everything else is my recommendation and can be
-changed.
+any code is written. Settled decisions are marked LOCKED or SETTLED; the
+remaining open items are listed in §10.
 
 ---
 
@@ -145,13 +144,37 @@ Built from chunky primitives — spheres, capsules, boxes — in code, with big
 readable heads and simple faces. This is deliberately the Mii / early-mascot
 approach: it reads instantly, animates cleanly, and matches the era.
 
-### 4.1 Player — **DECISION NEEDED**, pick one (or describe your own)
+### 4.1 Player — LOCKED to the character sheet
 
-| Option | Concept | Why it fits |
-|---|---|---|
-| **A. Nell (recommended)** | The lighthouse keeper's kid. Oversized straw sun hat, swim goggles on the forehead, striped tee, shorts, bare feet, permanent grin. | A human kid reads as "you" in a relaxing world; the hat makes the silhouette unmistakable from any camera angle. |
-| **B. Pip** | A small round sea otter in a red life vest. | Animal mascot energy; fun swim animations; naturally cute. |
-| **C. Skipper** | A puffin with a sailor cap who can flap-glide. | Gives a gentle glide mechanic for the cliffs; very "era" mascot. |
+The player is the barefoot island kid from the turnaround sheet (front,
+three-quarter, side, back). The sheet lives in `docs/reference/player-sheet.png`
+and is the source of truth for the model. What the in-game build matches:
+
+- **Proportions:** about 5.5 heads tall, big head, sturdy limbs, chunky
+  hands with simple fingers, wide faceted low-poly feet. Kid-hero build, not
+  chibi.
+- **Hat:** wide straw sun hat with a red band, brim slightly turned down at
+  the edges. It is the silhouette: readable from every camera angle and from
+  the top of the lighthouse.
+- **Hair:** messy sun-bleached brown, spiky bangs poking out under the brim,
+  a tuft at the back.
+- **Face:** big bright blue eyes, thick brows, freckles across the nose,
+  small relaxed smile. Warm tan skin.
+- **Outfit:** open red vest over a cream shirt with rolled sleeves, a small
+  white shell on a cord necklace, cream drawstring shorts rolled at the
+  hem, bare feet.
+- **Palette:** vest `#D93C3C`, shirt and shorts `#F4EBD3`, hat straw
+  `#D8B878` with band `#D93C3C`, hair `#8A5A22` with highlights `#C58A3A`,
+  skin `#C67A46`, eyes `#3C8FE0`.
+
+How it gets built: the model is constructed in code from primitives and
+low-poly shapes (hat as a lathe, head as a scaled sphere with a jaw wedge,
+vest and shirt as extruded shells, faceted feet), with a small
+canvas-painted texture for the face, freckles, necklace, and drawstring.
+The result will read as the era's in-game version of this concept art:
+chunkier and lower-detail than the sheet, which is exactly the relationship
+GameCube-era models had to their concept art. Toon-ramp shading, no
+outlines. **His name is still open, see §10.**
 
 Animation set for v1: idle (breathing + occasional look-around), walk, run,
 jump, double jump flip, land, swim, tread water, climb ladder, sit (on the
@@ -186,9 +209,21 @@ Deliberately small. The world *is* the game.
   find one, and a small celebration at milestones (10 / 25 / 50).
 - Talking: walk up, press E, speech bubble with the era's letter-by-letter
   text and a soft "blip" per character.
-- Day cycle: **optional stretch**. A fixed 2 PM sun is easier and more
-  "on-model". A slow drift to golden hour after 10 minutes of play would be
-  lovely and is cheap if the lighting is set up for it from the start.
+- **Day cycle: LOCKED.** A full cycle takes about 20 minutes of play, with
+  night kept deliberately short so it's a treat, not a slog:
+
+  | Phase | Length | What you see |
+  |---|---|---|
+  | Morning → afternoon | 12 min | The "on-model" look from §3, sun high and warm, hard blue sky |
+  | Sunset | 3 min | Sky to orange and pink, long shadows, gold sparkle on the water, clouds lit from below, "Sundrift Morning" softens into a slower arrangement |
+  | Night | 2.5 min | Deep indigo sky with stars, the lighthouse beam sweeping the island, windows glowing in town, fireflies on the ridge, faint blue glow at the waterline |
+  | Sunrise | 2.5 min | Pink to gold to blue, mist over the cove, gulls waking up |
+
+  The game starts at about 10 AM so a first session gets a full bright
+  day before the first sunset. All lighting (sun color and angle, sky
+  gradient, fog color, water tint, ambient) is driven from one
+  time-of-day value so the whole world moves together.
+
 - Title screen: the island from the sea, camera slowly sailing in, music
   playing. "Press any key." Pause menu with volume and the retro-res toggle.
 - Autosave of Sundrops and position.
@@ -217,13 +252,24 @@ note strings, with the voices this style needs:
   water), jump, double-jump whoosh, land, splash, swim strokes, Sundrop
   chime, milestone jingle, dialogue blip, menu tick, windmill creak.
 
-## 7. Technology — **DECISION NEEDED** (I recommend the first row)
+## 7. Technology — SETTLED: Three.js first (see the migration note below)
 
 | Option | Pros | Cons |
 |---|---|---|
 | **Three.js in the browser, vanilla JS modules, packaged with Electron** (recommended) | Zero-install play (open `index.html`), `npm start` for a desktop window, and a straightforward Steam build path. I can build and test it end-to-end here, including screenshots with headless Chromium. No editor, no asset pipeline. Ships to web, desktop, and Steam. | Not as much out-of-the-box as a full engine; physics is hand-rolled (fine for a character controller). |
 | Godot 4 | Real editor, built-in physics, exports everywhere. | Requires you to work in the editor; I can't run or verify it in this environment. Most of the "generated in code" approach is lost. |
 | Unity / Unreal | Industry standard. | Heavy, license terms, and again not something I can build or test here. |
+
+**Starting in Three.js and moving to a bigger engine later:** yes, this
+works, with one design rule to make it painless. Everything that describes
+the *world* stays as plain data, separate from the rendering code: the
+island heightmap parameters, prop placements, zone bounds, Sundrop spots,
+dialogue tables, the palette, character proportions, and music written as
+note strings. Those all move to Godot or Unity as-is. What does not move is
+the rendering and controller code, which would be rewritten in the new
+engine's language anyway. So the migration cost is "rebuild the engine
+layer," not "redesign the game." The plan's folder structure below is
+organized around that split.
 
 **Three.js details:** vendored copy in `vendor/` (no CDN, so it works
 offline and in Electron), ES modules via import map, no bundler needed.
@@ -297,15 +343,22 @@ judge the *look* without running anything.
 Rough proportions of effort: M2 and M3 are the big ones (about half the work
 combined), M4 and M5 a quarter each, M1 and M6 small.
 
-## 10. Decisions I need from you
+## 10. Decisions
 
-1. **Player character:** A (Nell), B (Pip), C (Skipper), or your own idea?
-2. **Tech:** Three.js-in-browser as recommended, or a full engine?
-3. **Name:** "Sundrift Isle" is a placeholder. Keep it, or something else?
-4. **Day cycle:** fixed 2 PM sun (simplest, most on-model), or slow drift to
-   golden hour as a stretch goal?
-5. **Gamepad:** worth supporting in v1? (Cheap to add; changes camera design
-   slightly if yes.)
+**Settled:** own repository; player character from the sheet; Three.js
+first with the data/engine split above; day cycle with sunset and a short
+night; gamepad support included (cheap, and the camera is designed for it
+from the start).
 
-Anything in §3 (style bible) or §3.3 (layout) you want changed, say so now:
-those are the decisions that are expensive to revisit after M2.
+**Still open:**
+
+1. **Game name.** "Sundrift Isle" is the placeholder. Candidates, with the
+   reasoning:
+   - **Halcyon Cay** — "halcyon days" literally means the calm, happy days
+     you look back on. That is the whole pitch. (recommended)
+   - **Everlong Bay** — the summer that never ends.
+   - **Marigold Shore** — warm, sunny, a little old-fashioned.
+   - **Lantern Reef** — hints at the lighthouse and the night phase.
+   - **Sunhollow** — one word, easy to say, feels like a place.
+2. **The kid's name.** Candidates: **Kip** (recommended: short, bright,
+   sounds like a skipping stone), **Marlo**, **Tobin**, **Sully**, **Reef**.
