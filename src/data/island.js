@@ -39,7 +39,7 @@ LR.ISLAND = {
     { name: 'resort-beach', x: 50,   z: 150, r: 80, y: 1.5, s: 0.95 },
     { name: 'town-plaza',   x: 190,  z: -10, r: 45, y: 6.0, s: 0.95 },
     { name: 'town-front',   x: 246,  z: -6,  r: 40, y: 2.4, s: 0.95 },
-    { name: 'lighthouse-top', x: 205, z: -152, r: 26, s: 1.0 },
+    { name: 'lighthouse-top', x: 205, z: -152, r: 26, s: 1.0, ignoreLand: true },   // the hill is standalone, so ignore the coast falloff
     { name: 'waterfall-pool', x: -172, z: 58, r: 9, y: -0.9, s: 1.0 },
     // Level ground under the windmills (y is taken from the terrain at the center).
     { name: 'mill-big',   x: -84,  z: -158, r: 16, s: 1.0 },

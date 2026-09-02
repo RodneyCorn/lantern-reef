@@ -55,7 +55,7 @@ LR.Terrain = class Terrain {
     for (const f of (useFlats ? this.data.flats : []) || []) {
       const d = Math.hypot(x - f.x, z - f.z) / f.r;
       if (d >= 1) continue;
-      const k = LR.Seeded.smooth(1 - d) * f.s * land;
+      const k = LR.Seeded.smooth(1 - d) * f.s * (f.ignoreLand ? 1 : land);
       h += (f.y - h) * k;
     }
     // Cliff hills last.

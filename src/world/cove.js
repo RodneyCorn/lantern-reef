@@ -5,6 +5,7 @@ LR.Cove = class Cove {
     const C = LR.COVE;
     this.group = new THREE.Group(); this.group.name = 'cove';
     this.updaters = [];
+    this.docks = [];
     const addColliders = (r) => { for (const b of r.colliders || []) physics.addBox(b); for (const c of r.cylinders || []) physics.addCylinder(c); };
 
     for (const h of C.huts) {
@@ -18,6 +19,7 @@ LR.Cove = class Cove {
       const x1 = d.x + ux * (s - 5), z1 = d.z + uz * (s - 5), x2 = x1 + ux * d.len, z2 = z1 + uz * d.len;
       const r = LR.Props.dock({ x1, z1, x2, z2, y: 1.15, groundAt: terrain.height });
       this.group.add(r.group); addColliders(r);
+      this.docks.push({ x1, z1, x2, z2, ux, uz, dir: d.dir });
       for (const b of d.boats || []) {
         const bx = x2 - ux * 3 + Math.cos(d.dir) * b.side * 2.6, bz = z2 - uz * 3 - Math.sin(d.dir) * b.side * 2.6;
         const boat = LR.Props.boat({ x: bx, z: bz, rot: d.dir + b.side * 0.25, color: b.color, stripe: b.stripe });

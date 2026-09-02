@@ -30,6 +30,9 @@
   const player = new LR.Player(scene, physics, LR.ISLAND.spawn);
   const interact = new LR.Interact();
   const dialogue = new LR.Dialogue(camera);
+  // Old Mabe sits on the first cove dock, a little way out, facing the water.
+  { const d = cove.docks[0], m = LR.CHARACTERS.npcs.find((n) => n.id === 'mabe');
+    m.x = d.x1 + d.ux * 11 + Math.cos(d.dir) * 0.9; m.z = d.z1 + d.uz * 11 - Math.sin(d.dir) * 0.9; m.heading = d.dir + Math.PI / 2; }
   const npcs = new LR.NPCs(scene, terrain, physics, interact, dialogue);
   const critters = new LR.Critters(scene, terrain, physics);
   for (const seat of LR.CHARACTERS.seats) {

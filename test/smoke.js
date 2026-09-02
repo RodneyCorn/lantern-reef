@@ -147,10 +147,15 @@ function check(cond, msg) {
   const npcCount = await page.evaluate(() => LR.game.npcs.list.length);
   check(npcCount === 6, `six islanders built (${npcCount})`);
   // Stand Milo near each islander with the camera looking past him at them.
+  // Milo stands beside each islander; a free camera frames them both.
   const visit = async (id, dx, dz, name) => {
-    await page.evaluate(([id, dx, dz]) => { const m = LR.CHARACTERS.npcs.find((n) => n.id === id); LR.game.teleport(m.x + dx, m.z + dz, Math.atan2(-dx, -dz)); LR.game.setCamera(Math.atan2(dx, dz), 0.12, 5); }, [id, dx, dz]);
+    const m = await page.evaluate(([id, dx, dz]) => {
+      const n = LR.game.npcs.list.find((q) => q.data.id === id);
+      LR.game.teleport(n.pos.x - dz * 0.6, n.pos.z + dx * 0.6, Math.atan2(dx, dz));
+      return { x: n.pos.x, y: n.pos.y, z: n.pos.z };
+    }, [id, dx, dz]);
     await sim(12);
-    await shot(name);
+    await wide(name, [m.x + dx * 1.7, m.y + 2.2, m.z + dz * 1.7], [m.x - dz * 0.3, m.y + 1.0, m.z + dx * 0.3]);
   };
   await visit('mabe', 2.6, 2.4, 'npc-mabe-dock');
   await visit('fennimore', 1.5, 3.2, 'npc-fennimore-hotel');
