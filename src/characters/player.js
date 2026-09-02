@@ -102,7 +102,7 @@ LR.Player = class Player {
     if (!this.grounded && !input.jumpHeld && this.vel.y > 3) this.vel.y -= 26 * dt;
 
     if (this.swimming) {
-      const surface = -0.55 + Math.sin(this._t * 2.2) * 0.06;
+      const surface = -1.2 + Math.sin(this._t * 2.2) * 0.06;
       this.vel.y = 0; this.pos.y += (surface - this.pos.y) * Math.min(1, dt * 8);
       this.grounded = false; this.jumpsLeft = 2;
     } else {
@@ -149,7 +149,7 @@ LR.Player = class Player {
     const cycle = this._t * (6 + run * 8);
     let bob = 0, lean = 0;
     if (this.swimming) {
-      b.rotation.x = 1.2; bob = -0.2; lean = 0;
+      b.rotation.x = 0.55; bob = 0; lean = 0;
       this.armL.rotation.x = Math.sin(this._t * 4) * 0.9; this.armR.rotation.x = Math.cos(this._t * 4) * 0.9;
     } else {
       b.rotation.x = 0;

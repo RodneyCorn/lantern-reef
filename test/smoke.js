@@ -88,7 +88,7 @@ function check(cond, msg) {
   await page.keyboard.up('w');
   const sw = await state();
   check(sw.swimming, `walking into the sea switches to swimming (depth ${(-sw.ground).toFixed(1)} m)`);
-  check(sw.y < 0 && sw.y > -1, `Milo floats at the surface (y ${sw.y.toFixed(2)})`);
+  check(sw.y < -0.8 && sw.y > -1.6, `Milo floats at the surface (y ${sw.y.toFixed(2)})`);
   await shot('04-swimming');
 
   // --- pier: stand on the Long Pier over deep water ---
@@ -143,6 +143,8 @@ function check(cond, msg) {
     await wide('wide-from-southwest', [-520, 220, 520], [40, 0, -20]);
     await wide('wide-from-northeast', [520, 240, -420], [-40, 0, 40]);
     await wide('wide-cove-from-above', [-150, 120, 260], [-140, 0, 60]);
+    await wide('postcard-cove', [-122, 4, 158], [-140, 6, 70]);
+    await wide('postcard-waterfall', [-140, 6, 100], [-172, 12, 52]);
     await page.evaluate(() => LR.game.setHour(18.1));
     await wide('wide-sunset-from-sea', [-80, 40, 520], [0, 20, 0]);
   }

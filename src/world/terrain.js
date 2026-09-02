@@ -29,11 +29,18 @@ LR.Terrain = class Terrain {
     // Sea floor falls away offshore.
     const off = LR.Seeded.smooth(Math.max(0, Math.min(1, (e - 1.08) / 0.5)));
     h += (c.seaFloor - c.shelfDepth) * off;
-    // Hills.
+    // Hills (cliff hills are added after the flats so a flat cannot pull a wall down).
     for (const hill of this.data.hills) {
+      if (hill.cliff) continue;
       const d = Math.hypot(x - hill.x, z - hill.z) / hill.r;
       if (d >= 1) continue;
-      const s = Math.pow(LR.Seeded.smooth(1 - d), hill.p);
+      let s;
+      if (hill.cliff) {
+        // Sheer face over the outer band, then a gently domed top.
+        const wall = LR.Seeded.smooth((1 - d) / hill.cliff);
+        const dome = 0.85 + 0.15 * LR.Seeded.smooth(1 - d);
+        s = wall * dome;
+      } else s = Math.pow(LR.Seeded.smooth(1 - d), hill.p);
       if (hill.standalone) h = Math.max(h, c.seaFloor + hill.h * s * 1.35);   // rises from the sea floor
       else h += hill.h * s * land;                                            // only on land
     }
@@ -46,6 +53,15 @@ LR.Terrain = class Terrain {
       if (d >= 1) continue;
       const k = LR.Seeded.smooth(1 - d) * f.s * land;
       h += (f.y - h) * k;
+    }
+    // Cliff hills last.
+    for (const hill of this.data.hills) {
+      if (!hill.cliff) continue;
+      const d = Math.hypot(x - hill.x, z - hill.z) / hill.r;
+      if (d >= 1) continue;
+      const wall = LR.Seeded.smooth((1 - d) / hill.cliff);
+      const dome = 0.85 + 0.15 * LR.Seeded.smooth(1 - d);
+      h += hill.h * wall * dome * land;
     }
     return h;
   }
@@ -60,12 +76,33 @@ LR.Terrain = class Terrain {
     return best;
   }
 
+  // Water depth over the patch as an 8-bit texture (0..25 m), sampled by
+  // the water shader for shallow tinting and the foam line.
+  buildDepthTexture(res = 1024) {
+    const { w, d } = this.data.patch;
+    const data = new Uint8Array(res * res);
+    for (let i = 0; i < res; i++) {
+      const z = -d / 2 + (i / (res - 1)) * d;
+      for (let j = 0; j < res; j++) {
+        const x = -w / 2 + (j / (res - 1)) * w;
+        const depth = Math.max(0, Math.min(25, -this.height(x, z)));
+        data[i * res + j] = Math.round(depth / 25 * 255);
+      }
+    }
+    const t = new THREE.DataTexture(data, res, res, THREE.RedFormat, THREE.UnsignedByteType);
+    t.minFilter = t.magFilter = THREE.LinearFilter;
+    t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+    t.needsUpdate = true;
+    return t;
+  }
+
   buildMesh() {
     const P = LR.PALETTE, { w, d, step } = this.data.patch;
     const nx = Math.round(w / step), nz = Math.round(d / step);
     const geo = new THREE.BufferGeometry();
     const pos = new Float32Array((nx + 1) * (nz + 1) * 3);
     const col = new Float32Array((nx + 1) * (nz + 1) * 3);
+    const spl = new Float32Array((nx + 1) * (nz + 1) * 3);
     const idx = new Uint32Array(nx * nz * 6);
     const sandWet = new THREE.Color(P.sandWet), sandDry = new THREE.Color(P.sandDry);
     const grassL = new THREE.Color(P.grassLight), grassD = new THREE.Color(P.grassDark);
@@ -85,6 +122,7 @@ LR.Terrain = class Terrain {
         const e = 0.8;
         n.set(this.height(x - e, z) - this.height(x + e, z), 2 * e, this.height(x, z - e) - this.height(x, z + e)).normalize();
         const grassNoise = LR.Seeded.fbm(x * 0.05, z * 0.05, seed + 3, 2) * 0.5 + 0.5;
+        let wSand = 1, wGrass = 0, wRock = 0;
         if (y < -0.35) {
           // Sea floor: sandy cyan in the shallows, cobalt in the deep.
           const t = LR.Seeded.smooth(Math.max(0, Math.min(1, -y / 11)));
@@ -101,14 +139,17 @@ LR.Terrain = class Terrain {
           const edge = 2.2 + LR.Seeded.fbm(x * 0.08, z * 0.08, seed + 11, 2) * 0.5;
           const t = LR.Seeded.smooth(Math.max(0, Math.min(1, (y - edge) / 0.5)));
           tmp2.copy(sandDry).lerp(tmp, t); tmp.copy(tmp2);
+          wSand = 1 - t; wGrass = t;
         }
         // Steep slopes are rock, with a little noise in the rock tone.
         const steep = LR.Seeded.smooth(Math.max(0, Math.min(1, (0.78 - n.y) / 0.18)));
         if (steep > 0 && y > 0.18) {
           tmp2.copy(rockL).lerp(rockD, LR.Seeded.noise2(x * 0.11, z * 0.11, seed + 5));
           tmp.lerp(tmp2, steep);
+          wRock = steep; wSand *= 1 - steep; wGrass *= 1 - steep;
         }
         col[k * 3] = tmp.r; col[k * 3 + 1] = tmp.g; col[k * 3 + 2] = tmp.b;
+        spl[k * 3] = wSand; spl[k * 3 + 1] = wGrass; spl[k * 3 + 2] = wRock;
         k++;
       }
     }
@@ -122,10 +163,10 @@ LR.Terrain = class Terrain {
     }
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    geo.setAttribute('splat', new THREE.BufferAttribute(spl, 3));
     geo.setIndex(new THREE.BufferAttribute(idx, 1));
     geo.computeVertexNormals();
-    const mat = new THREE.MeshLambertMaterial({ vertexColors: true });
-    const mesh = new THREE.Mesh(geo, mat);
+    const mesh = new THREE.Mesh(geo, LR.Materials.terrain());
     mesh.receiveShadow = true;
     mesh.castShadow = false;
     mesh.name = 'terrain';

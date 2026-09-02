@@ -17,13 +17,15 @@ LR.ISLAND = {
     { name: 'sunrise-cove', x: -130, z: 175, r: 120, s: 0.42 },
     { name: 'harbor-notch', x: 305, z: -10, r: 80, s: 0.26 },
   ],
-  // Hills add height. `p` shapes the profile: <1 is a steep-sided plateau
-  // (cliffs), >1 is a soft rounded hill. `standalone` hills rise from the
-  // sea floor on their own (the islet at the end of the Long Pier).
+  // Hills add height. `p` shapes the profile: <1 is a steep-sided plateau,
+  // >1 is a soft rounded hill. `cliff: w` makes a sheer wall: the hill
+  // rises to full height across the outer `w` fraction of its radius, so
+  // the top is a plateau with a near-vertical face (the waterfall cliff).
+  // `standalone` hills rise from the sea floor on their own (the islet).
   // Heights are deliberately exaggerated (about twice real-world scale):
   // the era's islands were tall and dramatic for their footprint.
   hills: [
-    { name: 'cove-cliff',   x: -220, z: -5,   r: 100, h: 44, p: 0.45 },
+    { name: 'cove-cliff',   x: -245, z: -25,  r: 105, h: 34, p: 0.5, cliff: 0.16 },
     { name: 'ridge-west',   x: -110, z: -130, r: 130, h: 82, p: 1.25 },
     { name: 'ridge-east',   x: 0,    z: -155, r: 105, h: 58, p: 1.3 },
     { name: 'town-slope',   x: 150,  z: -60,  r: 115, h: 18, p: 1.5 },
@@ -36,6 +38,7 @@ LR.ISLAND = {
     { name: 'cove-beach',   x: -125, z: 110, r: 95, y: 1.4, s: 0.95 },
     { name: 'resort-beach', x: 50,   z: 150, r: 80, y: 1.5, s: 0.95 },
     { name: 'town-plaza',   x: 190,  z: -10, r: 45, y: 6.0, s: 0.85 },
+    { name: 'waterfall-pool', x: -172, z: 58, r: 9, y: -0.9, s: 1.0 },
   ],
   // Gentle rolling detail on land.
   detail: { amp: 1.6, scale: 1 / 38, octaves: 3 },
@@ -51,10 +54,6 @@ LR.ISLAND = {
   // Gray-box stand-ins so the milestone has something to climb on.
   // Real props replace these in milestone 3.
   grayboxProps: [
-    { kind: 'dock',  x: -150, z: 150, len: 34, w: 4, dir: 0.35 },
-    { kind: 'dock',  x: -95,  z: 160, len: 26, w: 4, dir: 0.0 },
-    { kind: 'block', x: -120, z: 60,  w: 6, h: 3,  d: 6 },
-    { kind: 'block', x: -112, z: 52,  w: 4, h: 5.5, d: 4 },
     { kind: 'pier',  x1: 150, z1: 172, x2: 236, z2: 262, w: 4 },
   ],
 };

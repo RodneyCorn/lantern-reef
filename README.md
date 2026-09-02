@@ -10,10 +10,11 @@ you run, jump, swim, climb, talk to islanders, and hunt for hidden Sundrops.
 Nothing is threatening. Original characters, original music, original sound
 effects — everything generated from code, no downloaded assets.
 
-**Status:** milestone 1 of 6, the gray-box island. The whole island exists
-as terrain you can run, jump, and swim across, with the sky, sun, sea, day
-cycle, follow camera, and a stand-in Milo. No props, textures, characters,
-or sound yet. See [docs/PLAN.md](docs/PLAN.md) for the style bible, island
+**Status:** milestone 2 of 6, the style lock. Sunrise Cove is fully dressed
+(painted textures, palms, huts, docks and rowboats, the big tree with its
+tree house, the waterfall and cliff, clouds, foam shoreline) and the whole
+island has grass, bushes, rocks, and beach palms. Milo is still a stand-in,
+and there is no sound yet. See [docs/PLAN.md](docs/PLAN.md) for the style bible, island
 layout, audio plan, and the milestone list; `shots/` has the latest
 screenshots.
 
