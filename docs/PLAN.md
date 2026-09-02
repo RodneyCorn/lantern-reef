@@ -52,10 +52,12 @@ that are filtered smooth. Concretely:
   look (visible brush-like strokes, no photo noise), then displayed with
   linear filtering + mipmaps. This is exactly why old games look "soft but
   clean" on modern screens.
-- **Lighting:** one fixed sun (about 2 PM, high and slightly behind the
-  camera), a sky-blue hemisphere light, soft shadow maps for the player and
-  large props only. Toon-ish shading with a smooth 3-step ramp, not hard cel
-  lines. No outlines.
+- **Lighting:** one sun that moves with the day cycle, a sky-blue
+  hemisphere light, soft shadow maps. **Cel shading everywhere:** a
+  three-band tone ramp on characters, props, and terrain, so light falls in
+  flat steps the way it does in Wind Waker. **Ink outlines on characters:**
+  an inverted-hull pass draws a dark line around Milo and the islanders.
+  The world itself has no outlines; its shapes and color do the work.
 - **Baked look:** darkened vertex colors in corners and under trees to fake
   ambient occlusion, the way the era did it.
 - **Post-processing:** a *tiny* amount of bloom on the water sparkle and sky,
@@ -169,14 +171,14 @@ and is the source of truth for the model. What the in-game build matches:
   `#D8B878` with band `#D93C3C`, hair `#8A5A22` with highlights `#C58A3A`,
   skin `#C67A46`, eyes `#3C8FE0`.
 
-How it gets built: the model is constructed in code from primitives and
-low-poly shapes (hat as a lathe, head as a scaled sphere with a jaw wedge,
-vest and shirt as extruded shells, faceted feet), with a small
-canvas-painted texture for the face, freckles, necklace, and drawstring.
-The result will read as the era's in-game version of this concept art:
-chunkier and lower-detail than the sheet, which is exactly the relationship
-GameCube-era models had to their concept art. Toon-ramp shading, no
-outlines. **His name is Milo.**
+How it gets built: the model is constructed in code on a jointed rig. An
+egg-shaped lathe head with a chin, a painted face decal with big outlined
+cartoon eyes, thick brows, freckles and a smile, chunky bevelled hair
+wedges for the bangs and back tuft, smooth tapered lathe limbs with round
+joints and mitten hands, a rounded torso with the open vest as one shell
+plus lapels, and rounded feet with a big toe. Cel shading with ink
+outlines. The target is the Wind Waker school of cartoon character: bold
+silhouette, flat tone bands, big readable eyes. **His name is Milo.**
 
 Animation set for v1: idle (breathing + occasional look-around), walk, run,
 jump, double jump flip, land, swim, tread water, climb ladder, sit (on the

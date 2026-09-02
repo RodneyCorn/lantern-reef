@@ -3,7 +3,8 @@
 *A bright, welcoming island you can run around in — built to feel like a
 place you visited in 2002 and never quite forgot.*
 
-A 3D exploration game in the upscaled early-2000s style: hard blue sky,
+A 3D exploration game in the upscaled early-2000s style, cel-shaded with
+ink-outlined cartoon characters: hard blue sky,
 cyan-to-cobalt water, chunky low-poly palms and huts, painted low-resolution
 textures shown clean and smooth. You play an original mascot character;
 you run, jump, swim, climb, talk to islanders, and hunt for hidden Sundrops.

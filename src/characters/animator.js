@@ -94,7 +94,7 @@ LR.Animator = class Animator {
       obj.rotation.z += (e.z - obj.rotation.z) * k;
     }
     // Whole-body: bob, lean, flip, landing squash.
-    r.hips.position.y = 0.82 + bob + hipY;
+    r.hips.position.y = r.hipHeight + bob + hipY;
     if (this.flip > 0) { r.body.rotation.x = -Math.PI * 2 * (1 - this.flip); this.flip = Math.max(0, this.flip - dt * 2.4); if (this.flip === 0) r.body.rotation.x = 0; }
     else r.body.rotation.x += (lean - r.body.rotation.x) * Math.min(1, dt * 10);
     if (this.squash > 0) { const s = this.squash; r.body.scale.set(1 + s * 0.16, 1 - s * 0.2, 1 + s * 0.16); this.squash = Math.max(0, s - dt * 5); }

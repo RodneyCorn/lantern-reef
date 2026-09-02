@@ -16,7 +16,7 @@ LR.NPC = class NPC {
       const seat = data.seat || 0.5;
       const crate = new THREE.Mesh(new THREE.BoxGeometry(0.9, seat, 0.9), LR.Materials.painted('planks', LR.PALETTE.trunk));
       crate.position.set(data.x - Math.sin(this.heading) * 0.15, y + seat / 2, data.z - Math.cos(this.heading) * 0.15); crate.castShadow = true; scene.add(crate);
-      this.pos.y = y + seat - 0.62 * (data.look.scale || 1);
+      this.pos.y = y + seat - 0.56 * (data.look.scale || 1);
     }
     this.root.position.copy(this.pos); this.root.rotation.y = this.heading;
     this.talking = false;
@@ -24,7 +24,7 @@ LR.NPC = class NPC {
     scene.add(this.root);
     physics.addCylinder({ x: data.x, z: data.z, r: 0.45, y0: y - 1, y1: y + 1.6 });
   }
-  get headPos() { return new THREE.Vector3(this.pos.x, this.pos.y + 1.75 * (this.data.look.scale || 1), this.pos.z); }
+  get headPos() { return new THREE.Vector3(this.pos.x, this.pos.y + 1.8 * (this.data.look.scale || 1), this.pos.z); }
   nextLine() { const l = this.data.lines; const s = l[this.talkCount % l.length]; return s; }
   update(dt, playerPos) {
     const dx = playerPos.x - this.pos.x, dz = playerPos.z - this.pos.z, dist = Math.hypot(dx, dz);

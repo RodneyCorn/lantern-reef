@@ -11,7 +11,7 @@ const [out, x, z, yaw, pitch, dist, hour, cx, cy, cz, lx, ly, lz] = process.argv
     args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--no-sandbox'] });
   const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
   page.on('pageerror', (e) => console.log('pageerror:', e.message));
-  await page.goto('file://' + path.join(ROOT, 'index.html'));
+  await page.goto('file://' + path.join(ROOT, 'index.html') + (process.env.LR_HASH || ''));
   await page.waitForFunction(() => window.LR && LR.game && LR.game.ready && LR.game.frames > 2);
   await page.evaluate(([x, z, yaw, pitch, dist, hour, cx, cy, cz, lx, ly, lz]) => {
     const g = LR.game;

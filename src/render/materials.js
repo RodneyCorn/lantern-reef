@@ -3,6 +3,15 @@
 window.LR = window.LR || {};
 LR.Materials = (function () {
   const cache = new Map();
+  // Style switch: 'lambert' (smooth, era-accurate) or 'toon' (cel bands).
+  // Characters always use toon; this governs the world.
+  const style = { world: (location.hash || '').includes('lambert') ? 'lambert' : 'toon' };
+  function base(opts) {
+    const { cel, flatShading, ...rest } = opts;
+    const useCel = cel != null ? cel : style.world === 'toon';
+    if (useCel) { const m = new THREE.MeshToonMaterial(rest); m.gradientMap = LR.Toon.gradientMap(); return m; }
+    return new THREE.MeshLambertMaterial({ ...rest, flatShading: !!flatShading });
+  }
   // A palette-colored Lambert with a stroke map tiled every `tile` meters
   // (uv scale is the caller's business; this just sets repeat).
   function painted(texName, colorHex, opts = {}) {
@@ -11,15 +20,15 @@ LR.Materials = (function () {
     const map = LR.Textures[texName]().clone();
     map.needsUpdate = true;
     if (opts.repeat) map.repeat.set(opts.repeat[0], opts.repeat[1]);
-    const m = new THREE.MeshLambertMaterial({ color: colorHex, map, side: opts.side || THREE.FrontSide,
-      transparent: !!opts.transparent, alphaTest: opts.alphaTest || 0, vertexColors: !!opts.vertexColors });
+    const m = base({ color: colorHex, map, side: opts.side || THREE.FrontSide,
+      transparent: !!opts.transparent, alphaTest: opts.alphaTest || 0, vertexColors: !!opts.vertexColors, cel: opts.cel });
     cache.set(key, m);
     return m;
   }
   function flat(colorHex, opts = {}) {
     const key = `flat|${colorHex}|${JSON.stringify(opts)}`;
     if (cache.has(key)) return cache.get(key);
-    const m = new THREE.MeshLambertMaterial({ color: colorHex, side: opts.side || THREE.FrontSide, vertexColors: !!opts.vertexColors, flatShading: !!opts.flatShading });
+    const m = base({ color: colorHex, side: opts.side || THREE.FrontSide, vertexColors: !!opts.vertexColors, flatShading: !!opts.flatShading, cel: opts.cel });
     cache.set(key, m);
     return m;
   }
@@ -28,7 +37,7 @@ LR.Materials = (function () {
   // stroke maps (sand, grass, rock) blended by a per-vertex `splat` weight
   // and sampled in world space so they tile seamlessly across the island.
   function terrain() {
-    const mat = new THREE.MeshLambertMaterial({ vertexColors: true });
+    const mat = base({ vertexColors: true });
     const sandT = LR.Textures.sand(), grassT = LR.Textures.grass(), rockT = LR.Textures.rock();
     mat.onBeforeCompile = (shader) => {
       shader.uniforms.sandTex = { value: sandT };
@@ -45,8 +54,8 @@ LR.Materials = (function () {
           diffuseColor.rgb *= tS * w.x + tG * w.y + tR * w.z;
         `);
     };
-    mat.customProgramCacheKey = () => 'lr-terrain';
+    mat.customProgramCacheKey = () => 'lr-terrain-' + style.world;
     return mat;
   }
-  return { painted, flat, terrain };
+  return { painted, flat, terrain, style };
 })();

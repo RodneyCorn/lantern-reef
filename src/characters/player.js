@@ -29,11 +29,11 @@ LR.Player = class Player {
     scene.add(this.root);
   }
 
-  get headPos() { return new THREE.Vector3(this.pos.x, this.pos.y + 1.7, this.pos.z); }
+  get headPos() { return new THREE.Vector3(this.pos.x, this.pos.y + 1.75, this.pos.z); }
 
   sit(seat) {
     this.sitting = seat;
-    this.pos.set(seat.x, seat.y - 0.6, seat.z);
+    this.pos.set(seat.x, seat.y - 0.56, seat.z);
     this.vel.set(0, 0, 0);
     this.heading = seat.heading;
     this.grounded = false; this.swimming = false;
