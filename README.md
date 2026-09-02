@@ -15,8 +15,14 @@ Sunrise Cove, Resort Beach with the hotel and rock arch, the Long Pier out
 to the Sun Gate islet, Harbor Town with its plaza, bell tower, stone pier
 and ferry, Windmill Ridge with its windmills, and Lighthouse Point with a
 climbable lighthouse whose beam sweeps the island at night. A hot-air
-balloon drifts overhead. Milo is still a stand-in, and there is no sound
-yet. See [docs/PLAN.md](docs/PLAN.md) for the style bible, island
+balloon drifts overhead.
+
+Milestone 4, life, is in: Milo is built from his character sheet on a
+jointed rig with idle, walk, run, jump, flip, landing, swim, sit, and talk
+animations. Six islanders stand where they belong and talk in speech
+bubbles; you can sit on the leaning palm, the dock, and the lighthouse
+gallery. Gulls wheel and take off, crabs scuttle and flee, fish shadows
+cruise the shallows, butterflies drift over the grass. No sound yet. See [docs/PLAN.md](docs/PLAN.md) for the style bible, island
 layout, audio plan, and the milestone list; `shots/` has the latest
 screenshots.
 
@@ -52,5 +58,5 @@ set `LR_CHROME=/path/to/chrome`.
 | Mouse / Right stick | Orbit camera |
 | SPACE | Jump (again in the air for a double jump) |
 | SHIFT | Roll / dive |
-| E | Talk / sit / climb |
+| E | Talk to an islander, sit on a marked spot |
 | ESC | Pause |

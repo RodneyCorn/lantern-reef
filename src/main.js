@@ -28,6 +28,15 @@
   const lighthouse = new LR.Lighthouse(scene, terrain, physics);
   const balloon = new LR.Balloon(scene);
   const player = new LR.Player(scene, physics, LR.ISLAND.spawn);
+  const interact = new LR.Interact();
+  const dialogue = new LR.Dialogue(camera);
+  const npcs = new LR.NPCs(scene, terrain, physics, interact, dialogue);
+  const critters = new LR.Critters(scene, terrain, physics);
+  for (const seat of LR.CHARACTERS.seats) {
+    if (seat.id === 'gallery') seat.y = lighthouse.tower.top.y + 0.35;
+    if (seat.id === 'leaning-palm' && cove.leaningSeat) Object.assign(seat, cove.leaningSeat);
+    interact.add({ x: seat.x, z: seat.z, y: seat.y, r: seat.r, label: seat.label, action: (p) => p.sit(seat) });
+  }
   const follow = new LR.FollowCamera(camera, physics);
   const input = new LR.Input(canvas);
   const hud = new LR.HUD();
@@ -43,7 +52,7 @@
   let last = performance.now();
   let paused = false;
   const game = {
-    ready: false, scene, camera, renderer, terrain, physics, sky, water, clouds, cove, ridge, town, resort, pier, lighthouse, balloon, scatter, player, follow, input, hud, props,
+    ready: false, scene, camera, renderer, terrain, physics, sky, water, clouds, cove, ridge, town, resort, pier, lighthouse, balloon, scatter, player, npcs, critters, interact, dialogue, follow, input, hud, props,
     frames: 0,
     setHour: (h) => sky.setHour(h),
     teleport: (x, z, heading) => { player.teleport(x, z, heading); follow._first = true; },
@@ -61,7 +70,12 @@
     if (input.justPressed('KeyT')) sky.timeScale = sky.timeScale === 1 ? 40 : 1;   // debug: fast-forward the day
     if (!paused) {
       sky.advance(dt);
+      player.frozen = dialogue.isOpen;
       const moving = player.update(dt, input, follow.yaw);
+      interact.update(player, input, hud, dialogue);
+      dialogue.update(dt);
+      npcs.update(dt, player.pos);
+      critters.update(dt, player.pos);
       follow.update(dt, player.pos, player.heading, moving, input);
       sky.follow(player.pos, camera.position);
       water.update(dt, sky);

@@ -110,6 +110,54 @@ function check(cond, msg) {
     await shot(`zone-${z.id}`);
   }
 
+  // --- talk to Coco ---
+  await page.evaluate(() => { const c = LR.CHARACTERS.npcs.find((n) => n.id === 'coco'); LR.game.teleport(c.x, c.z + 2.2, Math.PI); LR.game.setCamera(0.4, 0.15, 5); });
+  await sim(10);
+  const promptText = await page.evaluate(() => document.getElementById('prompt').textContent);
+  check(/Talk to Coco/.test(promptText), `prompt offers to talk to Coco ("${promptText}")`);
+  await page.keyboard.press('e');
+  await sim(60);
+  const bubble = await page.evaluate(() => ({ open: LR.game.dialogue.isOpen, text: document.querySelector('#bubble .text').textContent, frozen: LR.game.player.frozen }));
+  check(bubble.open && bubble.text.length > 10, `speech bubble opens and types out text (${bubble.text.length} chars so far)`);
+  check(bubble.frozen, 'Milo stands still while talking');
+  await shot('npc-coco-talk');
+  await page.keyboard.press('e');   // finish the line
+  await sim(5);
+  await page.keyboard.press('e');   // close
+  await sim(5);
+  check(!(await page.evaluate(() => LR.game.dialogue.isOpen)), 'pressing E twice more closes the bubble');
+
+  // --- sit on the leaning palm ---
+  const seat = await page.evaluate(() => LR.CHARACTERS.seats[0]);
+  await page.evaluate((s) => { LR.game.teleport(s.x + 1.5, s.z - 1.5, 0); LR.game.setCamera(Math.PI * 0.75, 0.2, 6); }, seat);
+  await sim(10);
+  await page.keyboard.press('e');
+  await sim(30);
+  const sat = await state();
+  check(await page.evaluate(() => !!LR.game.player.sitting), 'E near the leaning palm sits Milo down');
+  check(sat.y > seat.y - 1.2 && sat.y < seat.y + 0.5, `Milo sits at trunk height (y ${sat.y.toFixed(2)}, seat ${seat.y.toFixed(2)})`);
+  await shot('sit-leaning-palm');
+  await page.keyboard.down('w'); await sim(40); await page.keyboard.up('w');
+  check(await page.evaluate(() => !LR.game.player.sitting), 'moving stands Milo back up');
+  await sim(120);
+  const stood = await state();
+  check(stood.grounded, 'and he lands back on the ground');
+
+  // --- islanders are where the data says ---
+  const npcCount = await page.evaluate(() => LR.game.npcs.list.length);
+  check(npcCount === 6, `six islanders built (${npcCount})`);
+  // Stand Milo near each islander with the camera looking past him at them.
+  const visit = async (id, dx, dz, name) => {
+    await page.evaluate(([id, dx, dz]) => { const m = LR.CHARACTERS.npcs.find((n) => n.id === id); LR.game.teleport(m.x + dx, m.z + dz, Math.atan2(-dx, -dz)); LR.game.setCamera(Math.atan2(dx, dz), 0.12, 5); }, [id, dx, dz]);
+    await sim(12);
+    await shot(name);
+  };
+  await visit('mabe', 2.6, 2.4, 'npc-mabe-dock');
+  await visit('fennimore', 1.5, 3.2, 'npc-fennimore-hotel');
+  await visit('tallow', 3, 0.5, 'npc-tallow-plaza');
+  await visit('ines', -2.5, 2.5, 'npc-ines-ridge');
+  await visit('pell', 2.5, 2.5, 'npc-pell-lighthouse');
+
   // --- time of day ---
   await page.evaluate(() => { LR.game.teleport(-120, 95, 0); LR.game.setCamera(Math.PI, 0.2, 8); });
   await sim(10);

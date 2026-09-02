@@ -28,6 +28,9 @@ LR.Cove = class Cove {
     this.group.add(bt.group); addColliders(bt);
     const lp = LR.Props.palm({ ...C.leaningPalm, y: terrain.height(C.leaningPalm.x, C.leaningPalm.z), seed: 7 });
     this.group.add(lp.group); physics.addCylinder(lp.collider);
+    // A seat a little way up the leaning trunk, facing the sea.
+    const sp = lp.curve.getPoint(0.42), ly = terrain.height(C.leaningPalm.x, C.leaningPalm.z);
+    this.leaningSeat = { x: C.leaningPalm.x + sp.x, z: C.leaningPalm.z + sp.z, y: ly - 0.15 + sp.y + 0.3, heading: C.leaningPalm.leanDir };
     C.palms.forEach((p, i) => {
       const r = LR.Props.palm({ ...p, y: terrain.height(p.x, p.z), seed: 200 + i });
       this.group.add(r.group); physics.addCylinder(r.collider);

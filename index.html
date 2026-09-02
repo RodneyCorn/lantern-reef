@@ -22,16 +22,28 @@
     text-shadow: 0 2px 0 rgba(0,0,0,.35), 0 0 18px rgba(0,80,160,.5); }
   #zone .sub { font-size: 16px; font-style: italic; opacity: .95; margin-top: 4px; }
   #zone.show { opacity: 1; }
+  #prompt { position: absolute; left: 50%; bottom: 64px; transform: translateX(-50%); font-size: 16px; opacity: 0; transition: opacity .2s; }
+  #prompt.show { opacity: 1; }
+  #bubble { position: absolute; transform: translate(-50%, -100%); max-width: 420px; min-width: 200px; background: #FFFDF6; color: #2A2A33;
+    border-radius: 16px; padding: 12px 16px 14px; box-shadow: 0 6px 18px rgba(0,40,90,.25); font-size: 17px; line-height: 1.35;
+    text-shadow: none; opacity: 0; transition: opacity .15s; pointer-events: none; }
+  #bubble:after { content: ''; position: absolute; left: 50%; bottom: -12px; margin-left: -10px; border: 10px solid transparent; border-top-color: #FFFDF6; border-bottom: 0; }
+  #bubble .who { font-weight: bold; color: #1A5CEC; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+  #bubble.show { opacity: 1; }
+  #bubble .more { position: absolute; right: 12px; bottom: 6px; font-size: 11px; color: #8A8A99; opacity: 0; }
+  #bubble.done .more { opacity: 1; }
 </style>
 </head>
 <body>
 <canvas id="game" tabindex="0"></canvas>
 <div id="hud">
-  <div id="title" class="chip">Lantern Reef <span style="opacity:.7;font-weight:normal">· milestone 3 the whole island</span></div>
+  <div id="title" class="chip">Lantern Reef <span style="opacity:.7;font-weight:normal">· milestone 4 life</span></div>
   <div id="clock" class="chip">10:00</div>
-  <div id="hint" class="chip">WASD move · SPACE jump (twice for double) · click + mouse to look · wheel zoom · gamepad OK</div>
+  <div id="hint" class="chip">WASD move · SPACE jump (twice for double) · E talk / sit · click + mouse to look · gamepad OK</div>
   <div id="fps" class="chip">-- fps</div>
   <div id="zone"><div class="name"></div><div class="sub"></div></div>
+  <div id="prompt" class="chip"></div>
+  <div id="bubble"><div class="who"></div><div class="text"></div><div class="more">E ▸</div></div>
 </div>
 <script src="vendor/three.min.js"></script>
 <script src="src/data/palette.js"></script>
@@ -43,11 +55,13 @@
 <script src="src/data/resort.js"></script>
 <script src="src/data/pier.js"></script>
 <script src="src/data/lighthouse.js"></script>
+<script src="src/data/characters.js"></script>
 <script src="src/engine/seeded.js"></script>
 <script src="src/engine/geo.js"></script>
 <script src="src/engine/input.js"></script>
 <script src="src/engine/physics.js"></script>
 <script src="src/engine/camera.js"></script>
+<script src="src/engine/interact.js"></script>
 <script src="src/render/textures.js"></script>
 <script src="src/render/materials.js"></script>
 <script src="src/render/sky.js"></script>
@@ -68,8 +82,13 @@
 <script src="src/world/pier.js"></script>
 <script src="src/world/lighthouse.js"></script>
 <script src="src/world/balloon.js"></script>
+<script src="src/characters/rig.js"></script>
+<script src="src/characters/animator.js"></script>
 <script src="src/characters/player.js"></script>
+<script src="src/characters/npcs.js"></script>
+<script src="src/characters/critters.js"></script>
 <script src="src/ui/hud.js"></script>
+<script src="src/ui/dialogue.js"></script>
 <script src="src/main.js"></script>
 </body>
 </html>

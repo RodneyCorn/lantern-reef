@@ -67,5 +67,5 @@ LR.Props.palm = function (opts) {
   group.position.set(x, y - 0.15, z);
   group.rotation.y = rnd() * Math.PI * 2;   // spins the lean direction too; fine for scatter
   if (opts.leanDir != null) group.rotation.y = 0;
-  return { group, collider: { x, z, r: 0.42, y0: y - 1, y1: y + 2.6 } };
+  return { group, curve, collider: { x, z, r: 0.42, y0: y - 1, y1: y + 2.6 } };
 };
