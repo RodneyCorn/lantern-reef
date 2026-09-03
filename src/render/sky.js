@@ -35,6 +35,8 @@ LR.Sky = class Sky {
           float t = clamp(d.y, -0.1, 1.0);
           float k = pow(smoothstep(-0.08, 0.55, t), 0.85);
           vec3 col = mix(horizon, zenith, k);
+          // A pale haze band hugging the horizon.
+          col = mix(col, horizon * 1.06, (1.0 - smoothstep(0.0, 0.09, abs(t - 0.015))) * 0.6);
           float sd = max(dot(d, sunDir), 0.0);
           col += sunColor * pow(sd, 90.0) * 0.55 * sunVis;                 // glow
           col += sunColor * smoothstep(0.9990, 0.9996, sd) * 1.4 * sunVis;   // disc

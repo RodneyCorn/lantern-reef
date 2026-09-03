@@ -342,7 +342,8 @@ judge the *look* without running anything.
 | 3 | **The whole island** ✅ | All five zones built, Long Pier, hotel, town, windmills, lighthouse, balloon. Swim, climb, sit. | Can run everywhere in the map; nothing you can fall through. |
 | 4 | **Life** ✅ | Player mascot with full animation set, six NPCs with dialogue, gulls, crabs, fish. | The island feels inhabited. |
 | 5 | **Sound** | Four music tracks with zone cross-fade, ambience, all SFX. | Play with eyes closed and know where you are. |
-| 6 | **Game** | Sundrops, HUD, title screen, pause/settings, autosave, retro-res toggle, gamepad. Electron build, tests green, README rewritten. | Ship-able. |
+| 6 | **Game** | Sundrops, HUD, title screen, pause/settings, autosave, retro-res toggle, gamepad. Electron build, tests green, README rewritten. | Playable end to end. |
+| 7 | **Polish** | The bar is Kingdom Hearts' Destiny Islands and Super Mario Sunshine's Delfino Plaza: nothing on screen looks unfinished. Cloud shadows drifting over the ground; wind in the palms, grass, and windmill cloth; dust puffs, footprints, splash rings, and landing rings for Milo; blinks and eye tracking; bloom, vignette, and a warm grade; sunset light shafts; fireflies and glowing windows at night; camera feel (field of view at full run, a tiny shake on hard landings, a cinematic title camera); foam trails behind boats and wet sand at the waterline; a finer shoreline mesh; a pass over every prop for silhouette and color; a pass over every animation for weight and follow-through. | Screenshots from any angle at any hour hold up next to the reference games. |
 
 Rough proportions of effort: M2 and M3 are the big ones (about half the work
 combined), M4 and M5 a quarter each, M1 and M6 small.

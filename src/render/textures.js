@@ -113,6 +113,40 @@ LR.Textures = (function () {
     const t = tex(c); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
     return (cache.cloud = t);
   }
+  // A high flat cloud sheet seen from below: a dense feathered core with
+  // long streaks trailing out of it along the wind, fading at every edge.
+  function cloudSheet(seed = 57) {
+    const key = 'sheet' + seed;
+    if (cache[key]) return cache[key];
+    const w = 1024, h = 256, c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d'), rnd = LR.Seeded.rng(seed);
+    ctx.clearRect(0, 0, w, h);
+    // Core mass: overlapping soft ellipses stretched along x.
+    for (let i = 0; i < 40; i++) {
+      const x = w * (0.25 + rnd() * 0.5), y = h * (0.3 + rnd() * 0.4), rx = 90 + rnd() * 220, ry = 14 + rnd() * 30;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, 1);
+      g.addColorStop(0, `rgba(255,255,255,${0.35 + rnd() * 0.4})`); g.addColorStop(0.6, `rgba(255,255,255,${0.2 + rnd() * 0.2})`); g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.save(); ctx.translate(x, y); ctx.scale(rx, ry); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    }
+    // Streaks trailing out along the wind.
+    ctx.lineCap = 'round';
+    for (let i = 0; i < 38; i++) {
+      const y = h * (0.15 + rnd() * 0.7), len = 250 + rnd() * 650, x0 = rnd() * (w - len), a = 0.08 + rnd() * 0.3, th = 5 + rnd() * 14;
+      const g = ctx.createLinearGradient(x0, 0, x0 + len, 0);
+      g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(0.35, `rgba(255,255,255,${a})`); g.addColorStop(0.65, `rgba(255,255,255,${a})`); g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.strokeStyle = g; ctx.lineWidth = th;
+      ctx.beginPath(); ctx.moveTo(x0, y); ctx.quadraticCurveTo(x0 + len / 2, y + (rnd() - 0.5) * 18, x0 + len, y + (rnd() - 0.5) * 8); ctx.stroke();
+    }
+    // Fade every edge.
+    const m = ctx.createRadialGradient(w / 2, h / 2, 40, w / 2, h / 2, w / 2);
+    m.addColorStop(0, 'rgba(255,255,255,1)'); m.addColorStop(0.6, 'rgba(255,255,255,0.85)'); m.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.globalCompositeOperation = 'destination-in'; ctx.fillStyle = m; ctx.fillRect(0, 0, w, h);
+    const v = ctx.createLinearGradient(0, 0, 0, h);
+    v.addColorStop(0, 'rgba(255,255,255,0)'); v.addColorStop(0.2, 'rgba(255,255,255,1)'); v.addColorStop(0.8, 'rgba(255,255,255,1)'); v.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = v; ctx.fillRect(0, 0, w, h);
+    const t = tex(c); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+    return (cache[key] = t);
+  }
   // A long wispy cirrus streak.
   function cloudWisp() {
     if (cache.wisp) return cache.wisp;
@@ -187,5 +221,5 @@ LR.Textures = (function () {
     return (cache.glint = t);
   }
 
-  return { sand, grass, rock, planks, thatch, bark, leaf, wall, cloudPuff, cloudWisp, waterfall, tuft, flower, stripes, sunGlint };
+  return { sand, grass, rock, planks, thatch, bark, leaf, wall, cloudPuff, cloudWisp, cloudSheet, waterfall, tuft, flower, stripes, sunGlint };
 })();
