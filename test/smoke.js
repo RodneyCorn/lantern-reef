@@ -199,6 +199,8 @@ function check(cond, msg) {
     await wide('wide-from-northeast', [520, 240, -420], [-40, 0, 40]);
     await wide('wide-cove-from-above', [-150, 120, 260], [-140, 0, 60]);
     await wide('postcard-cove', [-122, 4, 158], [-140, 6, 70]);
+    await wide('postcard-sky', [-120, 3, 100], [-60, 260, -500]);
+    await wide('postcard-shallows', [-140, 5, 172], [-122, -1, 148]);
     await wide('postcard-waterfall', [-140, 6, 100], [-172, 12, 52]);
     await page.evaluate(() => LR.game.teleport(-70, -140, 0));
     await wide('postcard-windmill', [-110, 72, -190], [-84, 80, -158]);

@@ -71,7 +71,7 @@ LR.Water = class Water {
           float foam = clamp(max(shoreFoam, waveLine), 0.0, 1.0) * step(0.02, d);
           col = mix(col, foamColor, foam);
           col *= tint;
-          float alpha = mix(0.38, 0.86, smoothstep(0.0, 3.5, d)) + fres * 0.1;
+          float alpha = mix(0.3, 0.84, smoothstep(0.0, 5.0, d)) + fres * 0.1;
           alpha = max(alpha, foam * 0.95);
           gl_FragColor = vec4(col, alpha);
           #include <fog_fragment>

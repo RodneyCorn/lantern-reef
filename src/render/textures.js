@@ -93,19 +93,45 @@ LR.Textures = (function () {
   });
 
   // ---- colored / alpha textures ----------------------------------------
+  // A big painted cumulus puff: soft edge, a few lumps inside, shaded blue
+  // toward the bottom.
   function cloudPuff() {
     if (cache.cloud) return cache.cloud;
-    const s = 128, c = canvas(s), ctx = c.getContext('2d');
-    const P = LR.PALETTE, top = new THREE.Color(P.cloud), bot = new THREE.Color(P.cloudShade);
-    const g = ctx.createRadialGradient(s / 2, s / 2, 4, s / 2, s / 2, s / 2);
-    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.55, 'rgba(255,255,255,0.9)'); g.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.fillStyle = g; ctx.fillRect(0, 0, s, s);
-    // Shade the lower half toward the cloud-shadow blue.
-    const v = ctx.createLinearGradient(0, s * 0.35, 0, s);
-    v.addColorStop(0, rgba(top.r * 255, top.g * 255, top.b * 255, 0)); v.addColorStop(1, rgba(bot.r * 255, bot.g * 255, bot.b * 255, 0.9));
+    const s = 256, c = canvas(s), ctx = c.getContext('2d'), rnd = LR.Seeded.rng(55);
+    const P = LR.PALETTE, bot = new THREE.Color(P.cloudShade);
+    ctx.clearRect(0, 0, s, s);
+    // Crisp cottony edge: solid inside, a short soft rim.
+    const lump = (x, y, r, a) => { const g = ctx.createRadialGradient(x, y, r * 0.55, x, y, r); g.addColorStop(0, `rgba(255,255,255,${a})`); g.addColorStop(0.82, `rgba(255,255,255,${a})`); g.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); };
+    lump(128, 140, 96, 1);
+    for (let i = 0; i < 11; i++) { const a = (i / 11) * Math.PI * 2; lump(128 + Math.cos(a) * (48 + rnd() * 30), 128 + Math.sin(a) * (40 + rnd() * 26), 34 + rnd() * 30, 1); }
+    // Faint inner shading lumps so the mass reads as lumpy, not flat.
+    ctx.globalCompositeOperation = 'source-atop';
+    for (let i = 0; i < 6; i++) { const x = 70 + rnd() * 116, y = 110 + rnd() * 100, r = 26 + rnd() * 34; const g = ctx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, 'rgba(150,180,215,0.22)'); g.addColorStop(1, 'rgba(150,180,215,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); }
+    const v = ctx.createLinearGradient(0, s * 0.45, 0, s);
+    v.addColorStop(0, rgba(bot.r * 255, bot.g * 255, bot.b * 255, 0)); v.addColorStop(1, rgba(bot.r * 255, bot.g * 255, bot.b * 255, 0.85));
     ctx.globalCompositeOperation = 'source-atop'; ctx.fillStyle = v; ctx.fillRect(0, 0, s, s);
     const t = tex(c); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
     return (cache.cloud = t);
+  }
+  // A long wispy cirrus streak.
+  function cloudWisp() {
+    if (cache.wisp) return cache.wisp;
+    const w = 512, h = 128, c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d'), rnd = LR.Seeded.rng(56);
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < 26; i++) {
+      const y = 20 + rnd() * 88, len = 160 + rnd() * 330, x0 = rnd() * (w - len), a = 0.08 + rnd() * 0.22, th = 3 + rnd() * 9;
+      const g = ctx.createLinearGradient(x0, 0, x0 + len, 0);
+      g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(0.3, `rgba(255,255,255,${a})`); g.addColorStop(0.7, `rgba(255,255,255,${a})`); g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.strokeStyle = g; ctx.lineWidth = th; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x0, y); ctx.quadraticCurveTo(x0 + len / 2, y + (rnd() - 0.5) * 24, x0 + len, y + (rnd() - 0.5) * 10); ctx.stroke();
+    }
+    // Soften the whole streak toward its ends and edges.
+    const m = ctx.createRadialGradient(w / 2, h / 2, 10, w / 2, h / 2, w / 2);
+    m.addColorStop(0, 'rgba(255,255,255,1)'); m.addColorStop(0.75, 'rgba(255,255,255,0.7)'); m.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.globalCompositeOperation = 'destination-in'; ctx.fillStyle = m; ctx.fillRect(0, 0, w, h);
+    const t = tex(c); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+    return (cache.wisp = t);
   }
   function waterfall() {
     if (cache.waterfall) return cache.waterfall;
@@ -161,5 +187,5 @@ LR.Textures = (function () {
     return (cache.glint = t);
   }
 
-  return { sand, grass, rock, planks, thatch, bark, leaf, wall, cloudPuff, waterfall, tuft, flower, stripes, sunGlint };
+  return { sand, grass, rock, planks, thatch, bark, leaf, wall, cloudPuff, cloudWisp, waterfall, tuft, flower, stripes, sunGlint };
 })();

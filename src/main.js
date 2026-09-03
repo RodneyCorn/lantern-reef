@@ -17,7 +17,8 @@
   const sky = new LR.Sky(scene);
   const water = new LR.Water(scene, terrain);
   const clouds = new LR.Clouds(scene);
-  scene.add(terrain.buildMesh());
+  const terrainMesh = terrain.buildMesh();
+  scene.add(terrainMesh);
   const props = new LR.GrayboxProps(scene, physics, terrain);
   const scatter = new LR.Scatter(scene, terrain, physics);
   const cove = new LR.Cove(scene, terrain, physics);
@@ -82,6 +83,7 @@
       follow.update(dt, player.pos, player.heading, moving, input);
       sky.follow(player.pos, camera.position);
       water.update(dt, sky);
+      terrainMesh.material.userData.time.value += dt;
       clouds.update(dt, sky);
       cove.update(dt);
       ridge.update(dt);
